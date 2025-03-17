@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from werkzeug.exceptions import HTTPException
 from cowsay import cowsay
 import random
@@ -13,7 +13,7 @@ def not_found(e):
 
 @app.route("/")
 def index():
-    return """oh hi there
+    body = """oh hi there
 you have found our little api resource
 your are not supposed to use it, it's just for purposes within the website
 like the cowsay route
@@ -31,6 +31,9 @@ returns a plaintext acii art of a cow saying a random line of text
 more about cowsay here https://en.wikipedia.org/wiki/Cowsay
 may sometimes tell secrets
 """
+    response = make_response(body, 200)
+    response.mimetype = "text/plain"
+    return response
 
 
 cowsay_lines = [
@@ -57,4 +60,6 @@ cowsay_lines = [
 
 @app.route("/cowsay")
 def cs():
-    return cowsay(random.choice(cowsay_lines)) + "\n"
+    response = make_response(cowsay(random.choice(cowsay_lines)) + "\n", 200)
+    response.mimetype = "text/plain"
+    return response
