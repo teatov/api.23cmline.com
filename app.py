@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response
+from flask import Flask, make_response
 from werkzeug.exceptions import HTTPException
 from cowsay import cowsay
 import random
@@ -8,7 +8,12 @@ app = Flask(__name__)
 
 @app.errorhandler(HTTPException)
 def not_found(e):
-    return jsonify(error=str(e)), e.code
+    message = e.description
+    if e.code == 404:
+        message = "there is no such thing\n"
+    response = make_response(message, e.code)
+    response.mimetype = "text/plain"
+    return response
 
 
 @app.route("/")
