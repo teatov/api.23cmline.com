@@ -1,9 +1,11 @@
 from flask import Flask, make_response
+from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 from cowsay import cowsay
 import random
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:4321", "https://23cmline.com"])
 
 
 @app.errorhandler(HTTPException)
